@@ -1,0 +1,132 @@
+<div class="header">
+  <span style="float: left; color: #f2f2f2; padding: 25px; font-size: 25px"
+    >RENTAL MANAGEMENT SYSTEM</span
+  >
+  <button
+    mat-button
+    #menuTrigger="matMenuTrigger"
+    [matMenuTriggerFor]="main_menu"
+    class="button2"
+  >
+    Select Location <i class="fa fa-arrow-down"></i>
+  </button>
+  <mat-menu #main_menu="matMenu">
+    <ng-container *ngFor="let mainItem of catalogData">
+      <button
+        mat-menu-item
+        (click)="showCategory(mainItem, true); menuTrigger.closeMenu()"
+        [matMenuTriggerFor]="sub_menu"
+      >
+        {{ mainItem["name"] }}
+      </button>
+      <mat-menu #sub_menu="matMenu">
+        <button
+          *ngFor="let subItem of mainItem['branches']"
+          (click)="showCategory(subItem, false)"
+          mat-menu-item
+        >
+          {{ subItem["name"] }}
+        </button>
+      </mat-menu>
+    </ng-container>
+  </mat-menu>
+</div>
+
+<p style="margin: 15px; cursor: pointer">
+  <span
+    *ngIf="!showHome"
+    (click)="
+      showHome = true; showSubLocations = null; showSubCategories = false
+    "
+    style="font-size: 30px"
+    ><i class="fa fa-home"></i
+  ></span>
+  <span *ngIf="!showHome" (click)="showCategory(breadCrumbData, breadBool)">
+    / {{ breadCrumbData["name"] }}</span
+  >
+</p>
+<div *ngIf="showSubLocations == true">
+  <div *ngFor="let branches of location['branches']" class="category">
+    <span style="margin: 20px; padding: 20px; width: 100px; font-size: 30px">{{
+      branches["name"]
+    }}</span>
+    <br />
+    <div
+      *ngFor="let categories of branches['categories']"
+      style="padding: 5px; cursor: pointer"
+      (click)="handleSubCategories(categories)"
+    >
+      <img class="image" src="../assets/category/{{ categories.image }}" />
+      <p style="color: white">
+        {{ categories["name"]
+        }}<span style="float: right; font-size: 20px">
+          <i class="fa fa-arrow-right"></i>
+        </span>
+      </p>
+    </div>
+  </div>
+</div>
+<div *ngIf="showSubLocations == false">
+  <span
+    style="
+      margin: 20px;
+      padding: 20px;
+      width: 100px;
+      font-size: 30px;
+      float: left;
+    "
+    >{{ location["name"] }}</span
+  >
+  <div
+    *ngFor="let categories of location['categories']"
+    style="padding: 5px; cursor: pointer"
+    (click)="handleSubCategories(categories)"
+    class="subCategory"
+  >
+    <!-- <img class="image" src="../assets/category/{{ categories.image }}" /> -->
+    <img class="image" src="../assets/category/{{ categories.image }}" />
+    <p style="color: white">
+      {{ categories["name"] }}
+      <span style="float: right; margin-left: 50px; font-size: 20px">
+        <i class="fa fa-arrow-right"></i>
+      </span>
+    </p>
+  </div>
+</div>
+<div *ngIf="showSubCategories == true">
+  <span
+    style="
+      margin: 20px;
+      padding: 20px;
+      width: 100px;
+      font-size: 30px;
+      float: left;
+    "
+    >{{ location["name"] }}</span
+  >
+  <div
+    *ngFor="let categories of location['subcategories']"
+    style="padding: 5px"
+    class="subCategory"
+  >
+    <!-- <img class="image" src="../assets/category/{{ categories.image }}" /> -->
+    <img
+      class="image"
+      src="../assets/category/subcategory/{{ categories['image'] }}"
+    />{{ categories["name"] }}
+  </div>
+</div>
+
+<div style="text-align: center; margin-top: 15%" *ngIf="showHome">
+  <h4>
+    WELCOME TO
+    <br />
+    RENTAL MANAGEMENT SYSTEMS
+  </h4>
+  <h4>Please select Location</h4>
+</div>
+
+<div class="footer">
+  <br />
+  <br />
+</div>
